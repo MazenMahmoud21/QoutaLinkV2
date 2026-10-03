@@ -1,0 +1,6 @@
+{
+  "name": "CloudPulse",
+  "description": "A modern cloud-connected test application with Google Sign-In authentication and real-time Firestore persistence.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

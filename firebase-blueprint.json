@@ -1,0 +1,92 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile representation",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Google Auth UID"
+        },
+        "email": {
+          "type": "string",
+          "description": "User email address"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User display name"
+        },
+        "photoUrl": {
+          "type": "string",
+          "description": "Optional profile photo URL"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Profile creation timestamp"
+        },
+        "lastActive": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last active timestamp"
+        }
+      },
+      "required": ["userId", "email", "displayName", "createdAt", "lastActive"]
+    },
+    "TestItem": {
+      "title": "TestItem",
+      "description": "Diagnostic test or task item tracked in the test app",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the test item"
+        },
+        "userId": {
+          "type": "string",
+          "description": "User ID of the item owner"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title or label of the test item"
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description or notes"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["PENDING", "IN_PROGRESS", "PASSED", "FAILED"],
+          "description": "Execution or lifecycle status"
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["LOW", "MEDIUM", "HIGH"],
+          "description": "Priority level"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when created (FieldValue.serverTimestamp())"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when updated (FieldValue.serverTimestamp())"
+        }
+      },
+      "required": ["id", "userId", "title", "status", "priority", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile documents"
+    },
+    "/users/{userId}/items/{itemId}": {
+      "schema": "TestItem",
+      "description": "User specific test records and tasks"
+    }
+  }
+}

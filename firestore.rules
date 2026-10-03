@@ -1,0 +1,55 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isValidTimestamp(val) {
+      return val is timestamp && val <= request.time;
+    }
+
+    function isValidUserProfile(data, userId) {
+      return data.keys().hasAll(['userId', 'email', 'displayName', 'createdAt', 'lastActive']) &&
+        data.keys().hasOnly(['userId', 'email', 'displayName', 'photoUrl', 'createdAt', 'lastActive']) &&
+        data.userId == userId &&
+        data.email is string && data.email.size() > 0 && data.email.size() <= 200 &&
+        data.displayName is string && data.displayName.size() > 0 && data.displayName.size() <= 100 &&
+        (!('photoUrl' in data) || (data.photoUrl is string && data.photoUrl.size() <= 500)) &&
+        isValidTimestamp(data.createdAt) &&
+        isValidTimestamp(data.lastActive);
+    }
+
+    function isValidTestItem(data, userId, itemId) {
+      return data.keys().hasAll(['id', 'userId', 'title', 'status', 'priority', 'createdAt', 'updatedAt']) &&
+        data.keys().hasOnly(['id', 'userId', 'title', 'description', 'status', 'priority', 'createdAt', 'updatedAt']) &&
+        data.id == itemId &&
+        data.userId == userId &&
+        data.title is string && data.title.size() >= 1 && data.title.size() <= 100 &&
+        (!('description' in data) || (data.description is string && data.description.size() <= 500)) &&
+        data.status in ['PENDING', 'IN_PROGRESS', 'PASSED', 'FAILED'] &&
+        data.priority in ['LOW', 'MEDIUM', 'HIGH'] &&
+        isValidTimestamp(data.createdAt) &&
+        isValidTimestamp(data.updatedAt);
+    }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidUserProfile(request.resource.data, userId);
+      allow update: if isOwner(userId) && isValidUserProfile(request.resource.data, userId);
+      allow delete: if isOwner(userId);
+
+      match /items/{itemId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidTestItem(request.resource.data, userId, itemId);
+        allow update: if isOwner(userId) && isValidTestItem(request.resource.data, userId, itemId);
+        allow delete: if isOwner(userId);
+      }
+    }
+  }
+}

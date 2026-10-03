@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Cloud base silhouette centered at 54, 50 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M72,42c-1.2,-7.8 -7.9,-14 -16,-14c-6.2,0 -11.7,3.6 -14.4,9c-1.2,-0.6 -2.6,-1 -4.1,-1c-5.2,0 -9.5,4.3 -9.5,9.5c0,0.8 0.1,1.6 0.3,2.4C23.8,49.2 20,53.8 20,59.5C20,66.4 25.6,72 32.5,72l39.5,0c7.2,0 13,-5.8 13,-13c0,-6.7 -5,-12.2 -11.5,-12.9c-0.5,-1.4 -1,-2.8 -1.5,-4.1z" />
+    <!-- Dynamic Pulse waveform inside the cloud / across lower center -->
+    <path
+        android:strokeColor="#2563EB"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="#00000000"
+        android:pathData="M32,58 L42,58 L47,48 L53,68 L59,52 L64,58 L76,58" />
+</vector>
